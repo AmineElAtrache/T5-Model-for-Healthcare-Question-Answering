@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .chat-container {
+            width: 400px;
+            background: white;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .chat-box {
+            height: 400px;
+            overflow-y: auto;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+        }
+        .message {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .message img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .message p {
+            margin: 0;
+        }
+        .input-box {
+            display: flex;
+            border-top: 1px solid #ddd;
+        }
+        input {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            outline: none;
+        }
+        button {
+            padding: 10px;
+            background: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-box" id="chat-box">
+            <div class="message">
+                <img src="{{ url_for('static', filename='bot-image.png') }}" alt="ChatBot Image">
+                <p><strong>ChatBot:</strong>
+Hello, Mohammed Amine. I hope you're having a great day. How may I assist you today?</p>
+            </div>
+        </div>
+        <div class="input-box">
+            <input type="text" id="message" placeholder="Type a message..." onkeypress="handleKeyPress(event)">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        var socket = io.connect("http://localhost:5000");
+
+        function sendMessage() {
+            var input = document.getElementById("message");
+            var message = input.value.trim();
+            if (message) {
+                addMessage("You: " + message);
+                socket.emit("send_message", { message: message });
+                input.value = "";
+            }
+        }
+
+        function addMessage(message, isBot = false) {
+    var chatBox = document.getElementById("chat-box");
+    var newMessage = document.createElement("div");
+    newMessage.classList.add("message");
+
+    if (isBot) {
+        // Add bot image to the message
+        var img = document.createElement("img");
+        img.src = "{{ url_for('static', filename='bot-image.png') }}";
+        img.alt = "ChatBot Image";
+        newMessage.appendChild(img);
+    }
+
+    var p = document.createElement("p");
+    p.innerHTML = message;
+    newMessage.appendChild(p);
+
+    chatBox.appendChild(newMessage);
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+socket.on("receive_message", function(data) {
+    addMessage("ChatBot: " + data.message, true); // Pass true for bot messages
+});
+
+        function handleKeyPress(event) {
+            if (event.key === "Enter") {
+                sendMessage();
+            }
+        }
+    </script>
+</body>
+</html>
