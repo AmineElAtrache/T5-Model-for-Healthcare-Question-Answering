@@ -1,3 +1,11 @@
+[![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python&logoColor=white)](https://www.python.org/) 
+[![PyTorch](https://img.shields.io/badge/PyTorch-2.0-red?logo=pytorch&logoColor=white)](https://pytorch.org/) 
+[![Transformers](https://img.shields.io/badge/HuggingFace-Transformers-yellow?logo=huggingface&logoColor=white)](https://huggingface.co/transformers/) 
+[![T5 Model](https://img.shields.io/badge/Model-T5-lightgrey?logo=google&logoColor=white)](https://huggingface.co/t5-base) 
+[![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
+
+
+
 # 🏥 Healthcare Q&A System using T5 Transformer
 
 This project implements an **AI-powered healthcare Question-Answering (Q&A) chatbot** using the **T5 (Text-to-Text Transfer Transformer)** model.  
